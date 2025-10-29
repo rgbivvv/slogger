@@ -11,6 +11,11 @@ def ensure_dir(path: str | Path) -> Path:
     path.mkdir(exist_ok=True)
     return path
 
+def wipe_dir_files_only(root_dir):
+    root = Path(root_dir)
+    for path in root.rglob("*"):
+        if path.is_file():
+            path.unlink()
 
 def download_file(url: Path, dest_path: Path):
     logger.info(f'Downloading file {url} to {dest_path} ')
@@ -170,6 +175,7 @@ def main():
     (build_temp_dir / 'index.html').write_text(index_content, encoding='utf-8')
 
     # Copy the temp build dir to the atomic build dir, clean up temp build dir
+    wipe_dir_files_only(build_dir)
     shutil.copytree(build_temp_dir, build_dir, dirs_exist_ok=True)
     shutil.rmtree(build_temp_dir)
 
