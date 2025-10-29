@@ -98,17 +98,17 @@ def main():
     md_dir = ensure_dir('posts')
     build_dir = ensure_dir('build')
     assets_dir = ensure_dir('public')
-    assets_dir_out = ensure_dir(build_dir / assets_dir)
+    # assets_dir_out = ensure_dir(build_dir / assets_dir)
 
-    # Wipe build directory
-    if build_dir.exists() and build_dir.is_dir():
-        shutil.rmtree(build_dir)
+    # Temp dirs for in-process builds
+    build_temp_dir = ensure_dir('build.temp')
 
     # Parse our Markdown pages and store essential information
     pages = parse_pages(md_dir, assets_dir)
 
     # Copy assets dir to build directory
-    shutil.copytree(assets_dir, assets_dir_out, dirs_exist_ok=True)
+    shutil.copytree(assets_dir, build_temp_dir / assets_dir, dirs_exist_ok=True)
+    # shutil.copytree(assets_dir, assets_dir_out, dirs_exist_ok=True)
 
     # Read header/footer templates
     header_content = Path('header.html').read_text(encoding='utf-8')
@@ -118,14 +118,14 @@ def main():
     written_count = 0
     for page in pages:
         # Write the rendered HTML file
-        fpath = build_dir / f'{page['fslug']}.html'
+        fpath = build_temp_dir / f'{page['fslug']}.html'
         fsuffix = 1
         # TODO: break this logic out into its own function
         if fpath.exists():
             new_slug = ''
             while fpath.exists():
                 new_slug = f'{page['title']}_{fsuffix}'
-                fpath = build_dir / f'{new_slug}.html'    
+                fpath = build_temp_dir / f'{new_slug}.html'    
                 fsuffix += 1
             page['title'] = new_slug
             page['fslug'] = new_slug
@@ -167,7 +167,13 @@ def main():
         footer_content
     ]
     index_content = '\n\n'.join(index_pieces)
-    (build_dir / 'index.html').write_text(index_content, encoding='utf-8')
+    (build_temp_dir / 'index.html').write_text(index_content, encoding='utf-8')
+
+    # Copy the temp build dir to the atomic build dir, clean up temp build dir
+    shutil.copytree(build_temp_dir, build_dir, dirs_exist_ok=True)
+    shutil.rmtree(build_temp_dir)
+
+
 
 if __name__ == '__main__':
     logging.basicConfig(
