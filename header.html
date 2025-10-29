@@ -1,0 +1,59 @@
+<html>
+
+    <head>
+        <title>{{title}}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            :root { --content-width: 45rem; }
+            html {
+                font-family: monospace;
+                background-color: lightcyan;
+                line-height: 1.2rem;
+            }
+            @media (max-width: 830px) {
+                :root { --content-width: 90%; }
+                html { font-size: 1.05rem; }
+            }
+            main {
+                max-width: var(--content-width);
+                width: 100%;
+                margin: auto;
+            }
+            img { max-width: var(--content-width); }
+            table {
+                border: 1px solid black; 
+                width: 100%;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 4px 8px;
+            }   
+            thead { font-weight: bold; }
+            ul {
+                list-style: none;
+                padding-left: 1.2em;
+            }
+            ul li::before {
+                content: ">";
+                margin-right: 0.5em;
+                color: black;
+            }
+            p, ul, ol, pre {
+                margin-top: 0px;
+                margin-bottom: 0.5rem;
+            }
+            pre {
+                background-color: black;
+                color: white;
+                padding: 0.5rem;
+            }
+            small > small { color: gray; }
+            audio { margin: 1rem 0px 1rem 0px; }
+        </style>
+    </head>
+
+    <body>
+
+<main>
+
+<h1>{{site_name}}</h1>

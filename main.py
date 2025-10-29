@@ -1,0 +1,179 @@
+#!venv/bin/python
+import logging
+import requests
+import re
+from pathlib import Path
+import shutil
+import mistune
+
+def ensure_dir(path: str | Path) -> Path:
+    path = Path(path)
+    path.mkdir(exist_ok=True)
+    return path
+
+
+def download_file(url: Path, dest_path: Path):
+    logger.info(f'Downloading file {url} to {dest_path} ')
+    response = requests.get(str(url), stream=True, timeout=10, headers={'User-Agent': 'curl/8.2.1'})
+    response.raise_for_status()
+    with open(dest_path, 'wb') as f:
+        for chunk in response.iter_content(8192):
+            f.write(chunk)
+
+
+def process_remote_files(text: str, public_dir: Path) -> str:
+    # Matches strings like ![xyz](https://example.com/xyz.jpg)
+    urls = set(re.findall(r'!\[.*?\]\((https?:\/\/[^\)]+)\)', text))
+    # Matches strings like src="https://example.com/xyz.jpg"
+    urls |= set(re.findall(r'src=[\'"](https?:\/\/[^\'"]+)[\'"]', text))
+
+    for url in urls:
+        if not url.startswith(("http://", "https://")):
+            logger.info(f"Skipping local reference: {url}")
+            continue
+
+        # Figure out where to look for the file
+        ext = Path(url).suffix.lower()
+        subdir = 'audio' if ext in ('.mp3', '.wav', '.ogg') else 'img'
+        dest_dir = ensure_dir(public_dir / subdir)
+        fname = Path(url).name
+        dest_path = dest_dir / fname
+
+        # Download the file if we do not already have it locally
+        if not dest_path.exists():
+            try:
+                download_file(url, dest_path)
+            except Exception as e:
+                logger.error(f'Failed to fetch {url}: {e}')
+                continue
+        
+        # Replace the link in the original text
+        text = text.replace(url, f'{dest_dir}/{fname}')
+    return text
+
+
+def parse_pages(src_dir: Path, public_dir: Path) -> list[dict]:
+    logger.info(f'Parsing Markdown files from "{src_dir}"')
+    pages = []
+    for file in src_dir.iterdir():
+        # Skip if what we have is not a file
+        if not file.is_file():
+            continue
+
+        # Delete the file if it is empty
+        if file.stat().st_size <= 1:
+            file.unlink(missing_ok=True)
+            continue
+
+        # Extract epoch and title
+        fname_parts = file.stem.split('_')
+        date = fname_parts[0]
+        epoch = int(fname_parts[1])
+        title = ' '.join(fname_parts[2:])
+        slug = '_'.join(title.split(' '))
+        if len(title) < 1: # If no title was provided...
+            title = date
+            slug = date
+
+        # Parse Markdown contents
+        content = file.read_text(encoding='utf-8')
+        content = process_remote_files(content, public_dir)
+        page = {
+            'fname': file.name,
+            'fstem': file.stem,
+            'fslug': slug,
+            'title': title,
+            'epoch': epoch,
+            'date': date,
+            'content': content,
+            'html_content': mistune.html(content),
+        }
+        pages.append(page)
+    return pages
+
+def main():
+    SITE_NAME = 'example.com'
+
+    # Declare paths
+    md_dir = ensure_dir('posts')
+    build_dir = ensure_dir('build')
+    assets_dir = ensure_dir('public')
+    assets_dir_out = ensure_dir(build_dir / assets_dir)
+
+    # Wipe build directory
+    if build_dir.exists() and build_dir.is_dir():
+        shutil.rmtree(build_dir)
+
+    # Parse our Markdown pages and store essential information
+    pages = parse_pages(md_dir, assets_dir)
+
+    # Copy assets dir to build directory
+    shutil.copytree(assets_dir, assets_dir_out, dirs_exist_ok=True)
+
+    # Read header/footer templates
+    header_content = Path('header.html').read_text(encoding='utf-8')
+    footer_content = Path('footer.html').read_text(encoding='utf-8')
+
+    # Render/write our HTML pages
+    written_count = 0
+    for page in pages:
+        # Write the rendered HTML file
+        fpath = build_dir / f'{page['fslug']}.html'
+        fsuffix = 1
+        # TODO: break this logic out into its own function
+        if fpath.exists():
+            new_slug = ''
+            while fpath.exists():
+                new_slug = f'{page['title']}_{fsuffix}'
+                fpath = build_dir / f'{new_slug}.html'    
+                fsuffix += 1
+            page['title'] = new_slug
+            page['fslug'] = new_slug
+
+        with open(fpath, 'w') as f:
+            rendered_pieces = [
+                header_content.replace('{{title}}', page['title']).replace('{{site_name}}', SITE_NAME),
+                # header_content,
+                page['html_content'],
+                '<p><a href="index.html">⤎ Back to index</a></p>',
+                footer_content,
+            ]
+            rendered = '\n\n'.join(rendered_pieces)
+            f.write(rendered)
+            written_count += 1
+    logger.info(f'Wrote {written_count} HTML pages')
+
+    # Create the post list HTML
+    pages.sort(key=lambda x: x['epoch'], reverse=True) # Sort by date descending
+    post_list = '<ul>'
+    for page in pages:
+        # Add a link to the post on our post list
+        post_list += f'<li><a href="{page['fslug']}.html">{page['title']}</a></li>'
+    post_list += '</ul>'
+
+    # Create the feed HTML
+    feed_content = ''
+    for page in pages:
+        post_link = f'<small><b><a href="{page['fslug']}.html">{page['title']}</a></b><small> ( at {page['epoch']} )</small></small>'
+        post_content = page['html_content']
+        feed_content += '\n<br><br>\n' + post_link + '\n<br>' + post_content
+
+    # Generate and write index.html
+    index_md = Path('index.md').read_text(encoding='utf-8')
+    index_pieces = [
+        header_content.replace('{{title}}', SITE_NAME).replace('{{site_name}}', SITE_NAME),
+        mistune.html(index_md),
+        feed_content,
+        footer_content
+    ]
+    index_content = '\n\n'.join(index_pieces)
+    (build_dir / 'index.html').write_text(index_content, encoding='utf-8')
+
+if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    )
+    global logger
+    logger = logging.getLogger(__name__)
+    main()
