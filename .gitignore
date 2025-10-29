@@ -3,3 +3,4 @@ venv/
 build/
 public/
 posts/
+config.py
