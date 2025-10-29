@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 import shutil
 import mistune
+import config
 
 def ensure_dir(path: str | Path) -> Path:
     path = Path(path)
@@ -97,12 +98,10 @@ def parse_pages(src_dir: Path, public_dir: Path) -> list[dict]:
     return pages
 
 def main():
-    SITE_NAME = 'example.com'
-
     # Declare paths
-    md_dir = ensure_dir('posts')
-    build_dir = ensure_dir('build')
-    assets_dir = ensure_dir('public')
+    md_dir = ensure_dir(config.MD_DIR)
+    build_dir = ensure_dir(config.BUILD_DIR)
+    assets_dir = ensure_dir(config.ASSETS_DIR)
     # assets_dir_out = ensure_dir(build_dir / assets_dir)
 
     # Temp dirs for in-process builds
@@ -117,7 +116,7 @@ def main():
 
     # Read header/footer templates
     header_content = Path('header.html').read_text(encoding='utf-8')
-    footer_content = Path('footer.html').read_text(encoding='utf-8')
+    footer_content= Path('footer.html').read_text(encoding='utf-8')
 
     # Render/write our HTML pages
     written_count = 0
@@ -137,11 +136,11 @@ def main():
 
         with open(fpath, 'w') as f:
             rendered_pieces = [
-                header_content.replace('{{title}}', page['title']).replace('{{site_name}}', SITE_NAME),
+                header_content.replace('{{title}}', page['title']).replace('{{site_name}}', config.SITE_NAME),
                 # header_content,
                 page['html_content'],
                 '<p><a href="index.html">⤎ Back to index</a></p>',
-                footer_content,
+                footer_content.replace('{{copyright_name}}', config.COPYRIGHT_NAME),
             ]
             rendered = '\n\n'.join(rendered_pieces)
             f.write(rendered)
@@ -166,10 +165,10 @@ def main():
     # Generate and write index.html
     index_md = Path('index.md').read_text(encoding='utf-8')
     index_pieces = [
-        header_content.replace('{{title}}', SITE_NAME).replace('{{site_name}}', SITE_NAME),
+        header_content.replace('{{title}}', config.SITE_NAME).replace('{{site_name}}', config.SITE_NAME),
         mistune.html(index_md),
         feed_content,
-        footer_content
+        footer_content.replace('{{copyright_name}}', config.COPYRIGHT_NAME)
     ]
     index_content = '\n\n'.join(index_pieces)
     (build_temp_dir / 'index.html').write_text(index_content, encoding='utf-8')
