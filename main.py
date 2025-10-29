@@ -139,7 +139,7 @@ def main():
                 header_content.replace('{{title}}', page['title']).replace('{{site_name}}', config.SITE_NAME),
                 # header_content,
                 page['html_content'],
-                '<p><a href="index.html">⤎ Back to index</a></p>',
+                '<p><a href="/">🡨 Back to index</a></p>',
                 footer_content.replace('{{copyright_name}}', config.COPYRIGHT_NAME),
             ]
             rendered = '\n\n'.join(rendered_pieces)
