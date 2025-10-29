@@ -1,0 +1,5 @@
+SITE_NAME="example.com"
+BUILD_DIR="build"
+MD_DIR="posts"
+ASSETS_DIR="public"
+COPYRIGHT_NAME="example.com"
