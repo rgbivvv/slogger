@@ -4,15 +4,21 @@
         <title>{{title}}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
+            @font-face {
+                font-family: "Noto Sans Mono";
+                src: url("public/noto_sans_mono.ttf") format('ttf');
+            }
+
             :root { --content-width: 45rem; }
             html {
-                font-family: monospace;
+                font-family: "Noto Sans Mono", monospace;
+                font-size: 0.8rem;
                 background-color: lightcyan;
                 line-height: 1.2rem;
             }
             @media (max-width: 830px) {
                 :root { --content-width: 90%; }
-                html { font-size: 1.05rem; }
+                html { font-size: 0.9rem; }
             }
             main {
                 max-width: var(--content-width);
