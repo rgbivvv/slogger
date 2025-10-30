@@ -20,7 +20,7 @@ def wipe_dir_files_only(root_dir):
 
 def download_file(url: Path, dest_path: Path):
     logger.info(f'Downloading file {url} to {dest_path} ')
-    response = requests.get(str(url), stream=True, timeout=10, headers={'User-Agent': 'curl/8.2.1'})
+    response = requests.get(str(url), stream=True, timeout=30, headers={'User-Agent': 'curl/8.2.1'})
     response.raise_for_status()
     with open(dest_path, 'wb') as f:
         for chunk in response.iter_content(8192):
