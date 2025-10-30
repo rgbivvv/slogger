@@ -5,3 +5,5 @@ public/
 posts/
 config.py
 index.md
+header.html
+footer.html
