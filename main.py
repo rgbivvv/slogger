@@ -20,12 +20,11 @@ def wipe_dir_files_only(root_dir):
 
 def download_file(url: Path, dest_path: Path):
     logger.info(f'Downloading file {url} to {dest_path} ')
-    response = requests.get(str(url), stream=True, timeout=30, headers={'User-Agent': 'curl/8.2.1'})
+    response = requests.get(str(url), stream=True, timeout=10, headers={'User-Agent': 'curl/8.2.1'})
     response.raise_for_status()
     with open(dest_path, 'wb') as f:
         for chunk in response.iter_content(8192):
             f.write(chunk)
-
 
 def process_remote_files(text: str, public_dir: Path) -> str:
     # Matches strings like ![xyz](https://example.com/xyz.jpg)
@@ -118,6 +117,9 @@ def main():
     header_content = Path('header.html').read_text(encoding='utf-8')
     footer_content= Path('footer.html').read_text(encoding='utf-8')
 
+    # Sort our pages in reverse order for correct file naming
+    pages.sort(key=lambda x: x['epoch'])
+
     # Render/write our HTML pages
     written_count = 0
     for page in pages:
@@ -148,7 +150,7 @@ def main():
     logger.info(f'Wrote {written_count} HTML pages')
 
     # Create the post list HTML
-    pages.sort(key=lambda x: x['epoch'], reverse=True) # Sort by date descending
+    pages.sort(key=lambda x: x['epoch'], reverse=True)
     post_list = '<ul>'
     for page in pages:
         # Add a link to the post on our post list
