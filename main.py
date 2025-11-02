@@ -104,7 +104,7 @@ def get_rss_feed(posts: list[dict]) -> str:
         <item>
             <title>{post['title']}</title>
             <link>{post['permalink']}</link>
-            <description>{post['html_content']}</description>
+            <description><![CDATA[{post['html_content']}]]></description>
             <pubDate>{post_datetime.strftime('%a, %d %b %Y %H:%M:%S GMT')}</pubDate>
             <guid isPermaLink="true">{post['permalink']}</guid>
         </item>
