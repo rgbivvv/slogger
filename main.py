@@ -1,11 +1,9 @@
 #!venv/bin/python
-import logging
-import requests
-import re
+import logging, requests, re, shutil
 from pathlib import Path
-import shutil
 import mistune
 import config
+from datetime import datetime, timezone
 
 def ensure_dir(path: str | Path) -> Path:
     path = Path(path)
@@ -96,6 +94,38 @@ def parse_pages(src_dir: Path, public_dir: Path) -> list[dict]:
         pages.append(page)
     return pages
 
+def get_rss_feed(posts: list[dict]) -> str:
+    logger.info("Generating RSS feed")
+    rss_posts = ''
+    for post in posts:
+        post['permalink'] = f'{config.SITE_URL}/{post['fslug']}.html'
+        post_datetime = datetime.fromtimestamp(post['epoch'], tz=timezone.utc)
+        rss_post = f"""
+            <item>
+                <title>{post['title']}</title>
+                <link>{post['permalink']}</link>
+                <description>{' '.join(post['content'].split()[:15]) + '...'}</description>
+                <pubDate>{post_datetime.strftime('%a, %d %b %Y %H:%M:%S GMT')}</pubDate>
+                <guid isPermaLink="true">{post['permalink']}</guid>
+            </item>
+        """
+        rss_posts += rss_post
+        
+    feed = f"""
+    <?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+        <channel>
+            <title>{config.SITE_NAME}</title>
+            <link>{config.SITE_URL}/</link>
+            <description>{config.SITE_DESCRIPTION}</description>
+
+            {rss_posts}
+            
+        </channel>
+    </rss>
+    """
+    return feed
+
 def main():
     # Declare paths
     md_dir = ensure_dir(config.MD_DIR)
@@ -174,6 +204,10 @@ def main():
     ]
     index_content = '\n\n'.join(index_pieces)
     (build_temp_dir / 'index.html').write_text(index_content, encoding='utf-8')
+
+    # Generate and write RSS feed
+    feed = get_rss_feed(pages)
+    (build_temp_dir / 'feed.xml').write_text(feed, encoding='utf-8')
 
     # Copy the temp build dir to the atomic build dir, clean up temp build dir
     wipe_dir_files_only(build_dir)
