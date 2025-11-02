@@ -101,28 +101,27 @@ def get_rss_feed(posts: list[dict]) -> str:
         post['permalink'] = f'{config.SITE_URL}/{post['fslug']}.html'
         post_datetime = datetime.fromtimestamp(post['epoch'], tz=timezone.utc)
         rss_post = f"""
-            <item>
-                <title>{post['title']}</title>
-                <link>{post['permalink']}</link>
-                <description>{' '.join(post['content'].split()[:15]) + '...'}</description>
-                <pubDate>{post_datetime.strftime('%a, %d %b %Y %H:%M:%S GMT')}</pubDate>
-                <guid isPermaLink="true">{post['permalink']}</guid>
-            </item>
+        <item>
+            <title>{post['title']}</title>
+            <link>{post['permalink']}</link>
+            <description>{' '.join(post['content'].split()[:15]) + '...'}</description>
+            <pubDate>{post_datetime.strftime('%a, %d %b %Y %H:%M:%S GMT')}</pubDate>
+            <guid isPermaLink="true">{post['permalink']}</guid>
+        </item>
         """
         rss_posts += rss_post
         
-    feed = f"""
-    <?xml version="1.0" encoding="UTF-8"?>
-    <rss version="2.0">
-        <channel>
-            <title>{config.SITE_NAME}</title>
-            <link>{config.SITE_URL}/</link>
-            <description>{config.SITE_DESCRIPTION}</description>
+    feed = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>{config.SITE_NAME}</title>
+        <link>{config.SITE_URL}/</link>
+        <description>{config.SITE_DESCRIPTION}</description>
 
-            {rss_posts}
-            
-        </channel>
-    </rss>
+        {rss_posts}
+        
+    </channel>
+</rss>
     """
     return feed
 
