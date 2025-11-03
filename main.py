@@ -130,7 +130,6 @@ def main():
     md_dir = ensure_dir(config.MD_DIR)
     build_dir = ensure_dir(config.BUILD_DIR)
     assets_dir = ensure_dir(config.ASSETS_DIR)
-    # assets_dir_out = ensure_dir(build_dir / assets_dir)
 
     # Temp dirs for in-process builds
     build_temp_dir = ensure_dir('build.temp')
@@ -140,11 +139,11 @@ def main():
 
     # Copy assets dir to build directory
     shutil.copytree(assets_dir, build_temp_dir / assets_dir, dirs_exist_ok=True)
-    # shutil.copytree(assets_dir, assets_dir_out, dirs_exist_ok=True)
 
     # Read header/footer templates
     header_content = Path('header.html').read_text(encoding='utf-8')
     footer_content= Path('footer.html').read_text(encoding='utf-8')
+    footer_content = footer_content.replace('{{copyright_name}}', config.COPYRIGHT_NAME)
 
     # Sort our pages in reverse order for correct file naming
     pages.sort(key=lambda x: x['epoch'])
@@ -171,7 +170,7 @@ def main():
                 # header_content,
                 page['html_content'],
                 '<p><a href="/">&larr; Back to index</a></p>',
-                footer_content.replace('{{copyright_name}}', config.COPYRIGHT_NAME),
+                footer_content,
             ]
             rendered = '\n\n'.join(rendered_pieces)
             f.write(rendered)
@@ -198,8 +197,9 @@ def main():
     index_pieces = [
         header_content.replace('{{title}}', config.SITE_NAME).replace('{{site_name}}', config.SITE_NAME),
         mistune.html(index_md),
+        post_list,
         feed_content,
-        footer_content.replace('{{copyright_name}}', config.COPYRIGHT_NAME)
+        footer_content
     ]
     index_content = '\n\n'.join(index_pieces)
     (build_temp_dir / 'index.html').write_text(index_content, encoding='utf-8')
