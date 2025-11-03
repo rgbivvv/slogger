@@ -11,13 +11,10 @@
                 background-color: lightcyan;
                 line-height: 1.2rem;
             }
-            @media (max-width: 830px) {
-                :root { --content-width: 90%; }
-            }
             main {
                 max-width: var(--content-width);
                 width: 100%;
-                margin: auto;
+                margin: 2.5rem auto 0px auto;
             }
             img { max-width: var(--content-width); }
             table {
@@ -49,6 +46,9 @@
             }
             small > small { color: gray; }
             audio { margin: 1rem 0px 1rem 0px; }
+            @media (max-width: 830px) {
+                :root { --content-width: 90%; }
+            }
         </style>
     </head>
 
