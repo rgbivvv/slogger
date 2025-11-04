@@ -166,13 +166,15 @@ def main():
 
         with open(fpath, 'w') as f:
             rendered_pieces = [
-                header_content.replace('{{title}}', page['title']).replace('{{site_name}}', config.SITE_NAME),
-                # header_content,
+                header_content,
+                f'<table><tbody><tr><td><a href="{page['fslug']}.html">{config.SITE_URL}/{page['fslug']}.html</a></td></tr></tbody></table>',
                 page['html_content'],
                 '<p><a href="/">&larr; Back to index</a></p>',
                 footer_content,
             ]
             rendered = '\n\n'.join(rendered_pieces)
+            rendered = rendered.replace('{{title}}', page['title']) \
+                       .replace('{{site_name}}', config.SITE_NAME)
             f.write(rendered)
             written_count += 1
     logger.info(f'Wrote {written_count} HTML pages')
@@ -195,13 +197,15 @@ def main():
     # Generate and write index.html
     index_md = Path('index.md').read_text(encoding='utf-8')
     index_pieces = [
-        header_content.replace('{{title}}', config.SITE_NAME).replace('{{site_name}}', config.SITE_NAME),
+        header_content,
         mistune.html(index_md),
         post_list,
         feed_content,
         footer_content
     ]
     index_content = '\n\n'.join(index_pieces)
+    index_content = index_content.replace('{{title}}', config.SITE_NAME) \
+                    .replace('{{site_name}}', config.SITE_NAME)
     (build_temp_dir / 'index.html').write_text(index_content, encoding='utf-8')
 
     # Generate and write RSS feed

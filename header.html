@@ -21,16 +21,17 @@
                 width: 100%;
                 margin: 2.5rem auto 0px auto;
             }
-	    h1:first-child { font-size: 2rem; }
-	    h1 { font-size: 1.6rem; }
+            h1:first-child { font-size: 2rem; }
+            h1 { font-size: 1.6rem; }
             img { max-width: var(--content-width); }
             table {
                 border: 1px solid black; 
                 width: 100%;
             }
-            th, td {
+            table, th, td {
                 border: 1px solid black;
-                padding: 4px 8px;
+                border-collapse: collapse;
+                width: auto;
             }   
             thead { font-weight: bold; }
             ul {
@@ -66,5 +67,3 @@
     <body>
 
 <main>
-
-<h1>{{site_name}}</h1 >
