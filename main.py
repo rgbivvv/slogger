@@ -167,7 +167,7 @@ def main():
         with open(fpath, 'w') as f:
             rendered_pieces = [
                 header_content,
-                f'<table><tbody><tr><td>https://<a href="{config.SITE_URL}.html">{config.SITE_NAME}</a>/{page["fslug"]}</td></tr></tbody></table>',
+                f'<table><tbody><tr><td>https://<a href="{config.SITE_URL}">{config.SITE_NAME}</a>/{page["fslug"]}.html</td></tr></tbody></table>',
                 page['html_content'],
                 '<p><a href="/">&larr; Back to index</a></p>',
                 footer_content,
