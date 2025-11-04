@@ -1,3 +1,4 @@
+<! DOCTYPE html>
 <html>
 
     <head>
@@ -6,7 +7,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="public/img/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="public/img/favicon-16x16.png">
         <link rel="shortcut icon" href="public/img/favicon.ico">
-        <link rel="apple-touch-icon" href="public/img/apple_touch_icon.png">
+        <link rel="apple-touch-icon" href="public/img/apple-touch-icon.png">
         <style>
             :root { --content-width: 45rem; }
             html {
@@ -41,14 +42,18 @@
                 margin-right: 0.5em;
                 color: black;
             }
-            p, ul, ol, pre {
-                margin-top: 0px;
-                margin-bottom: 1rem;
-            }
             pre {
                 background-color: black;
                 color: white;
                 padding: 0.5rem;
+            }
+	    blockquote {
+		color: DarkMagenta;
+		font-style: italic;
+	    }
+	    blockquote p:first-child::before, blockquote p:last-child::after {
+		display: inline;
+		content: "\"";
             }
             small > small { color: gray; }
             audio { margin: 1rem 0px 1rem 0px; }
