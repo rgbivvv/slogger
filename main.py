@@ -37,7 +37,14 @@ def process_remote_files(text: str, public_dir: Path) -> str:
 
         # Figure out where to look for the file
         ext = Path(url).suffix.lower()
-        subdir = 'audio' if ext in ('.mp3', '.wav', '.ogg') else 'img'
+        if ext in ('.mp3', '.wav', '.ogg', '.flac'):
+            subdir = 'audio'
+        elif ext in ('.mp4', '.mpeg', '.mov', '.avi'):
+            subdir = 'video'
+        elif ext in ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'):
+            subdir = 'img'
+        else:
+            subdir = 'other'
         dest_dir = ensure_dir(public_dir / subdir)
         fname = Path(url).name
         dest_path = dest_dir / fname
