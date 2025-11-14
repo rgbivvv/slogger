@@ -176,7 +176,7 @@ def main():
                 header_content,
                 f'<table><tbody><tr><td>https://<a href="{config.SITE_URL}">{config.SITE_NAME}</a>/{page["fslug"]}.html</td></tr></tbody></table>',
                 page['html_content'],
-                '<p><a href="/">&larr; Back to index</a></p>',
+                '<p><a href="/">&#8604; Back to index</a></p>',
                 footer_content,
             ]
             rendered = '\n\n'.join(rendered_pieces)
