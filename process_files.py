@@ -87,7 +87,7 @@ def write_post_pages(posts: list[dict], dest_dir: Path) -> int:
             post['slug'] = new_slug
 
         # A couple of small components to put on the individual post pages
-        post_header = f'<table><tbody><tr><td>https://<a href="{config.SITE_URL}">{config.SITE_NAME}</a>/{post['fname']}.html</td></tr></tbody></table>'
+        post_header = f'<table><tbody><tr><td>https://<a href="{config.SITE_URL}">{config.SITE_NAME}</a>/{post['fname']}</td></tr></tbody></table>'
         back_link = '<p><a href="/">&#8604; Back to index</a></p>'
 
         # Render the page and write it
