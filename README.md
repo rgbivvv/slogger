@@ -4,7 +4,7 @@
 
 A scrappy static site generator focused on quick writing, plaintext files, and minimal dependencies.
 
-Inspired by WNOADIARWB's [slog of thoughts](https://wnoadiarwb.us).
+Inspired by WNOADIARWB's [slog of thoughts](https://wnoadiarwb.us) and Bradley Taunt's [barf](https://barf.btxx.org/).
 
 ## Usage
 
@@ -25,5 +25,7 @@ COPYRIGHT_NAME="example.com"
 Create a file called `index.md`. Example:
 
 ```markdown
+# My Site
+
 This is my slogger site.
 ```
