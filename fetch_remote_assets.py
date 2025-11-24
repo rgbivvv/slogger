@@ -48,5 +48,5 @@ def localize_remote_assets(text: str, dest_dir: Path) -> str:
                 continue
         
         # Replace the link in the original text
-        text = text.replace(url, f'{dest_path}/{fname}')
+        text = text.replace(url, str(dest_path))
     return text
