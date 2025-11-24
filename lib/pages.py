@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Any
 
-import config
+import lib.config as config
 
 # Declare global template variables
 TEMPLATE_VARS = {

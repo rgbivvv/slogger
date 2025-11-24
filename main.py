@@ -3,13 +3,13 @@
 import logging, shutil
 from pathlib import Path
 import mistune
-import config
+import lib.config as config
 from datetime import datetime, timezone
 
-from process_files import parse_posts, write_post_pages
-from utils import ensure_dir, wipe_dir_files_only
-from pages import render_write_page
-from sanitize import sanitize_html
+from lib.process_files import parse_posts, write_post_pages
+from lib.utils import ensure_dir, wipe_dir_files_only
+from lib.pages import render_write_page
+from lib.sanitize import sanitize_html
 
 logger = logging.getLogger(__name__)
 

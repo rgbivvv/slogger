@@ -10,7 +10,7 @@ Inspired by WNOADIARWB's [slog of thoughts](https://wnoadiarwb.us) and Bradley T
 
 This project is under active development, so expect some bugs when using it.
 
-Create a `config.py` that defines the following variables:
+Create a `config.py` in `lib/` that defines the following variables:
 
 ```python
 SITE_NAME="example.com"

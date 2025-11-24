@@ -2,10 +2,10 @@ import logging
 from pathlib import Path
 import mistune
 
-import config
-from sanitize import sanitize_html
-from pages import render_write_page
-from fetch_remote_assets import localize_remote_assets
+import lib.config as config
+from lib.sanitize import sanitize_html
+from lib.pages import render_write_page
+from lib.fetch_remote_assets import localize_remote_assets
 
 logger = logging.getLogger(__name__)
 

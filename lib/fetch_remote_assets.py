@@ -3,7 +3,7 @@ import requests
 import re
 from pathlib import Path
 
-from utils import ensure_dir
+from lib.utils import ensure_dir
 
 logger = logging.getLogger(__name__)
 
