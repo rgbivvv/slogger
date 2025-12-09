@@ -46,13 +46,14 @@ def get_rss_feed(posts: list[dict]) -> str:
 
 
 def main():
+
     # Declare paths
     md_dir = ensure_dir(config.MD_DIR)
     build_dir = ensure_dir(config.BUILD_DIR)
     build_temp_dir = ensure_dir('build.temp') # For in-process builds
     assets_dir = ensure_dir(config.ASSETS_DIR)
 
-    # Parse our Markdown pages and store essential information
+    # Parse our Markdown pages to store essential information
     logger.info(f'Parsing Markdown files from "{(md_dir.resolve())}"')
     posts = parse_posts(md_dir, assets_dir)
     

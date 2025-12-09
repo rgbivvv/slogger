@@ -83,8 +83,10 @@ def write_post_pages(posts: list[dict], dest_dir: Path) -> int:
                 new_slug = f'{post['title']}_{fsuffix}'
                 fpath = dest_dir / f'{new_slug}.html'    
                 fsuffix += 1
+            # Correct the data containing the old slug
             post['title'] = new_slug
             post['slug'] = new_slug
+            post['permalink'] = f'{config.SITE_URL}/{new_slug}.html'
 
         # A couple of small components to put on the individual post pages
         post_header = f'<table><tbody><tr><td>https://<a href="{config.SITE_URL}">{config.SITE_NAME}</a>/{post['fname']}</td></tr></tbody></table>'
