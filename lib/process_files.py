@@ -78,7 +78,7 @@ def write_post_pages(posts: list[dict], dest_dir: Path) -> int:
         fpath = dest_dir / post['fname']
         fsuffix = 1
         if fpath.exists():
-            new_slug = ''
+            new_slug = post['slug']
             while fpath.exists():
                 new_slug = f'{post['title']}_{fsuffix}'
                 fpath = dest_dir / f'{new_slug}.html'    
