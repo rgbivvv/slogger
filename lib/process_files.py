@@ -34,7 +34,7 @@ def parse_posts(src_dir: Path, assets_dir: Path) -> list[dict]:
         fname_parts = file.stem.split('_')
         date = fname_parts[0]
         epoch = int(fname_parts[1])
-        title = ' '.join(fname_parts[2:])
+        title = ' '.join([date] + fname_parts[2:])
         slug = '_'.join(title.split(' '))
         if len(title) < 1: # If no title was provided...
             title = date
