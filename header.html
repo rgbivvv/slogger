@@ -1,68 +1,109 @@
 <html>
 
-    <head>
-        <title>{{title}}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" type="image/png" sizes="32x32" href="public/img/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="public/img/favicon-16x16.png">
-        <link rel="shortcut icon" href="public/img/favicon.ico">
-        <link rel="apple-touch-icon" href="public/img/apple-touch-icon.png">
-        <style>
-            :root { --content-width: 45rem; }
-            html {
-                font-family: monospace;
-                background-color: lightcyan;
-                line-height: 1.2rem;
-            }
-            main {
-                max-width: var(--content-width);
-                width: 100%;
-                margin: 2.5rem auto 0px auto;
-            }
-            h1:first-child { font-size: 2rem; }
-            h1 { font-size: 1.6rem; }
-            img { max-width: var(--content-width); }
-            table {
-                border: 1px solid black; 
-                width: 100%;
-            }
-            table, th, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-                width: auto;
-                font-size: inherit;
-            }   
-            thead { font-weight: bold; }
-            ul {
-                list-style: none;
-                padding-left: 1.2em;
-            }
-            ul li::before {
-                content: ">";
-                margin-right: 0.5em;
-                color: black;
-            }
-            pre {
-                background-color: black;
-                color: white;
-                padding: 0.5rem;
-            }
-            blockquote {
-                color: DarkMagenta;
-                font-style: italic;
-            }
-            blockquote p:first-child::before, blockquote p:last-child::after {
-                display: inline;
-                content: "\"";
-            }
-            small > small { color: gray; }
-            audio { margin: 1rem 0px 1rem 0px; }
-            @media (max-width: 830px) {
-                :root { --content-width: 90%; }
-            }
-        </style>
-    </head>
+<head>
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="public/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="public/img/favicon-16x16.png">
+    <link rel="shortcut icon" href="public/img/favicon.ico">
+    <link rel="apple-touch-icon" href="public/img/apple-touch-icon.png">
+    <style>
+        :root {
+            --content-width: 45rem;
+        }
 
-    <body>
+        html {
+            /* font-family: monospace; */
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: lightcyan;
+            line-height: 1.2rem;
+        }
 
-<main>
+        main {
+            max-width: var(--content-width);
+            width: 100%;
+            margin: 2.5rem auto 0px auto;
+        }
+
+        h1:first-child {
+            font-size: 2rem;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+        }
+
+        img {
+            max-width: var(--content-width);
+        }
+
+        table {
+            border: 1px solid black;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: auto;
+            font-size: inherit;
+        }
+
+        thead {
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 1.2em;
+        }
+
+        ul li::before {
+            content: ">";
+            margin-right: 0.5em;
+            color: black;
+        }
+
+        pre {
+            background-color: black;
+            color: white;
+            padding: 0.5rem;
+        }
+
+        blockquote {
+            color: DarkMagenta;
+            font-style: italic;
+        }
+
+        blockquote p:first-child::before,
+        blockquote p:last-child::after {
+            display: inline;
+            content: "\"";
+        }
+
+        .post-link,
+        .post-list-link {
+            font-family: monospace;
+        }
+
+        small>small {
+            color: gray;
+        }
+
+        audio {
+            margin: 1rem 0px 1rem 0px;
+        }
+
+        @media (max-width: 830px) {
+            :root {
+                --content-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>

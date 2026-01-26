@@ -3,6 +3,7 @@ venv/
 build/
 public/
 posts/
+drafts/
 config.py
 index.md
 header.html

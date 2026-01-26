@@ -69,13 +69,13 @@ def main():
     post_list = '<ul>'
     for post in posts:
         # Add a link to the post on our post list
-        post_list += f'<li><a href="{post['permalink']}">{post['title']}</a></li>'
+        post_list += f'<li><span class="post-list-link"><a href="{post['permalink']}">{post['title']}</a></span></li>'
     post_list += '</ul>'
 
     # Create the feed component
     feed_content = ''
     for post in posts:
-        post_link = f'<small><b><a href="{post['permalink']}">{post['title']}</a></b><small> ( at {post['epoch']} )</small></small>'
+        post_link = f'<span class="post-link"><small><b><a href="{post['permalink']}">{post['title']}</a></b><small> ( at {post['epoch']} )</small></small><span<'
         post_content = post['html_content']
         feed_content += '\n<br><br>\n' + post_link + '\n<br>' + post_content
 
