@@ -20,6 +20,7 @@ BUILD_DIR="build"
 MD_DIR="posts"
 ASSETS_DIR="public"
 COPYRIGHT_NAME="example.com"
+FEATURED_POSTS_COUNT=5
 ```
 
 Create a file called `index.md`. Example:
