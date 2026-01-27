@@ -66,11 +66,19 @@ def main():
 
     # Create the post list component
     posts.sort(key=lambda x: x['epoch'], reverse=True)
-    post_list = '<ul>'
-    for post in posts:
-        # Add a link to the post on our post list
-        post_list += f'<li><span class="post-list-link"><a href="{post['permalink']}">{post['title']}</a></span></li>'
-    post_list += '</ul>'
+    
+    post_list = ''
+    featured_posts = '<ul>'
+    for post in posts[:config.FEATURED_POSTS_COUNT]:
+        featured_posts += f'<li><span class="post-list-link"><a href="{post['permalink']}">{post['title']}</a></span></li>'
+    featured_posts += '</ul>'
+    post_list += featured_posts
+    if len(posts) > config.FEATURED_POSTS_COUNT:
+        other_posts = '<details><summary><small><i>more posts...</i></small></summary><ul>'
+        for post in posts[config.FEATURED_POSTS_COUNT:]:
+            other_posts += f'<li><span class="post-list-link"><a href="{post['permalink']}">{post['title']}</a></span></li>'
+        other_posts += '</ul></details>'
+        post_list += other_posts
 
     # Create the feed component
     feed_content = ''
