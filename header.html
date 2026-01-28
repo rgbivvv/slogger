@@ -26,6 +26,11 @@
             margin: 2.5rem auto 0px auto;
         }
 
+        p {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
         h1:first-child {
             font-size: 2rem;
         }
@@ -34,7 +39,7 @@
             font-size: 1.6rem;
         }
 
-        img {
+        img, video {
             max-width: var(--content-width);
         }
 
@@ -90,6 +95,10 @@
         .post-list-link {
             font-family: monospace;
             font-size: 12px;
+        }
+
+        .post-link {
+            margin: 0.2rem;
         }
 
         .post-link>small {
