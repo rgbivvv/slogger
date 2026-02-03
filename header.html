@@ -57,15 +57,20 @@
 
         ul {
             list-style: none;
-            padding-left: 1.2em;
+            padding-left: 0;
+        }
+
+        ul li {
+            display: flex;
+            align-items: flex-start;
         }
 
         ul li::before {
             content: ">";
             margin-right: 0.5em;
-            color: black;
             font-family: monospace;
             font-size: 11px;
+            flex-shrink: 0;
         }
 
         pre {
