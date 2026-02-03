@@ -39,7 +39,8 @@
             font-size: 1.6rem;
         }
 
-        img, video {
+        img,
+        video {
             max-width: var(--content-width);
         }
 
@@ -67,16 +68,21 @@
         }
 
         ul li {
-            display: flex;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 0.5em;
+            align-items: start;
         }
 
         ul li::before {
             content: ">";
-            margin-right: 0.5em;
             font-family: monospace;
             font-size: 11px;
-            flex-shrink: 0;
+            line-height: 1.2rem;
+        }
+
+        ul li p {
+            margin: 0;
         }
 
         pre {
