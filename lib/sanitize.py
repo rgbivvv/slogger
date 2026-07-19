@@ -11,7 +11,8 @@ ALLOWED_TAGS = (
         'pre', 
         'code', 
         'br',
-        'small'
+        'span',
+        'small',
         'hr',
         'table',
         'p',
@@ -25,7 +26,7 @@ ALLOWED_TAGS = (
 )
 
 ALLOWED_ATTRIBUTES = {
-    "*": ["class"],
+    "*": ["class"], 
     "a": ["href", "title"],
     "img": ["src", "alt"],
     "audio": ["src", "controls"],

@@ -13,6 +13,10 @@
             --content-width: 45rem;
         }
 
+        .crimson {
+            color: crimson;
+        }
+
         html {
             font-family: Helvetica, Arial, sans-serif;
             font-size: 0.9rem;
@@ -68,15 +72,11 @@
         }
 
         ul li {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            column-gap: 0.5em;
-            align-items: start;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5em;
         }
 
         ul li::before {
-            content: ">";
+            content: "> ";
             font-family: monospace;
             font-size: 11px;
             line-height: 1.2rem;
@@ -87,8 +87,6 @@
         }
 
         pre {
-            background-color: black;
-            color: white;
             padding: 0.5rem;
         }
 
